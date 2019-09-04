@@ -25,6 +25,11 @@ public abstract class BasePage {
     @FindBy(css = "#user-name")
     protected WebElement userMenuName;
 
+    @FindBy(css = ".user-name")
+    protected WebElement usersFullName;
+
+    @FindBy(xpath = "//span[@class='menu-popup-item-text' and contains(text(), 'Log out')]")
+    protected WebElement logout;
 
     public BasePage() {
         PageFactory.initElements(Driver.getDriver(), this);
@@ -66,10 +71,10 @@ public abstract class BasePage {
      * @param tab
      * @param module
      *///span[@class='menu-item-link-text' and contains(text(),'Activity Stream')]
-    //span[@class='feed-add-post-form-link']/span[contains(text(),'Task')]
+    //span[@class='feed-add-post-form-link feed-add-post-form-link-active']/span[contains(text(),'Task')]
     public void navigateToModule(String tab, String module) {
         String tabLocator = "//span[@class='menu-item-link-text' and contains(text(),'" + tab + "')]";
-        String moduleLocator = "span[contains(text(),'" + module + "')]";
+        String moduleLocator = "//span[@class='feed-add-post-form-link']/span[contains(text(),'"+ module +"')]";
         try {
             BrowserUtils.waitForClickablility(By.xpath(tabLocator), Integer.valueOf(ConfigurationReader.getProperty("SHORT_WAIT")));
             WebElement tabElement = Driver.getDriver().findElement(By.xpath(tabLocator));
@@ -101,5 +106,17 @@ public abstract class BasePage {
     public String getPageTitle(){
         waitUntilLoaderScreenDisappear();
         return Driver.getDriver().getTitle();
+    }
+
+    public String getUsersFullName(){
+        waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForVisibility(usersFullName, Integer.valueOf(ConfigurationReader.getProperty("SHORT_WAIT")));
+        return usersFullName.getText();
+    }
+
+    public void logout(){
+        BrowserUtils.waitForStaleElement(usersFullName);
+        usersFullName.click();
+        logout.click();
     }
 }

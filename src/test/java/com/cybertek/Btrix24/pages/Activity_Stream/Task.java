@@ -26,7 +26,7 @@ public class Task extends BasePage {
      public WebElement sendBtn;
 
 
-    @FindBy(css = "[class='bxhtmled-top-bar-btn bxhtmled-button-link']")
+    @FindBy(css = "//span[@class='bxhtmled-top-bar-btn bxhtmled-button-link']/i")
     public WebElement  linkBtn;
 
 
